@@ -1404,17 +1404,29 @@ ensure_dependencies() {
     warn "缺少系统依赖:${_dep_missing# };没找到 opkg / apk / apt-get,请自行安装。"
   else
     info "缺少系统依赖:${_dep_missing# },尝试用 $_dep_pm 安装(软件源不通时只提示,不中断)..."
-    _dep_to=""
-    command -v timeout >/dev/null 2>&1 && _dep_to="timeout 180"
     _dep_updated=1
-    $_dep_to $_dep_pm update >/dev/null 2>&1 || { _dep_updated=0; warn "$_dep_pm update 失败(软件源不通?),仍尝试安装。"; }
-    # 逐个装:一个装不上不连累其它(内核模块包要和当前内核版本一致,厂商固件常对不上)。记下装不上的原因,
-    # 最后按原因提示——以前一律提示「opkg install 包名」,软件源不通 / 源里没有这个包时照着敲也只会得到 Unknown package
+    # 优化:如果 opkg 列表缓存已存在，则无需重复全量 update，避免国内源连不上时无限等待
+    if [ "$_dep_pm" = "opkg" ] && [ -d /var/opkg-lists ] && [ "$(ls -A /var/opkg-lists 2>/dev/null)" ]; then
+      info "检测到已有 opkg 软件包索引，跳过重复 update 以免卡住..."
+    else
+      info "正在更新软件包列表 ($_dep_pm update)..."
+      if command -v timeout >/dev/null 2>&1; then
+        timeout 60 $_dep_pm update || { _dep_updated=0; warn "$_dep_pm update 失败或超时,仍尝试直接安装。"; }
+      else
+        $_dep_pm update || { _dep_updated=0; warn "$_dep_pm update 失败,仍尝试直接安装。"; }
+      fi
+    fi
+    # 逐个安装并展示输出
     for _d in $_dep_missing; do
       _dep_pkg=$(dep_pkg "$_d")
       [ -n "$_dep_pkg" ] || continue
-      _dep_out=$($_dep_to $_dep_verb "$_dep_pkg" 2>&1) || true
-      # 内核对不上时 opkg 也先打一行 Unknown package(真机输出),所以先认内核
+      info "正在安装依赖: $_dep_pkg ..."
+      if command -v timeout >/dev/null 2>&1; then
+        _dep_out=$(timeout 60 $_dep_verb "$_dep_pkg" 2>&1) || true
+      else
+        _dep_out=$($_dep_verb "$_dep_pkg" 2>&1) || true
+      fi
+      [ -n "$_dep_out" ] && echo "$_dep_out"
       case "$_dep_out" in
         *"kernel (="*|*"kernel="*) _dep_kernel="$_dep_kernel $_d" ;;
         *"Unknown package"*|*"no such package"*) _dep_unknown="$_dep_unknown $_d" ;;
