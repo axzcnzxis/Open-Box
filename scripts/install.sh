@@ -826,7 +826,34 @@ fetch_to_file_trusted() {
     fi
     TRUSTED_DIRECT_BROKEN=1
   fi
-  fetch_to_file "$(build_url "$1")" "$2"
+  if fetch_to_file "$(build_url "$1")" "$2" && valid_sha_file "$2"; then
+    return 0
+  fi
+  # 如果直连通道失败且当前不是明确指定 direct，自动尝试内置镜像下载校验文件
+  if [ "$CHANNEL" = "direct" ]; then
+    warn "直连下载校验文件失败，尝试通过加速镜像获取..."
+    _ft_ifs=$IFS
+    IFS='
+'
+    for _ft_m in $BUILTIN_MIRRORS; do
+      IFS=$_ft_ifs
+      [ -n "$_ft_m" ] || continue
+      case "$_ft_m" in
+        http://*|https://*) _ft_url="${_ft_m%/}/$1" ;;
+        *) _ft_url="https://${_ft_m%/}/$1" ;;
+      esac
+      if fetch_to_file_probe "$_ft_url" "$2" 2>/dev/null && valid_sha_file "$2"; then
+        info "已通过镜像 $_ft_m 成功获取校验文件"
+        # 顺便将后续正文下载也切到该镜像
+        openbox_adopt_source "$_ft_m"
+        return 0
+      fi
+      IFS='
+'
+    done
+    IFS=$_ft_ifs
+  fi
+  return 1
 }
 valid_sha_file() {
   _vs_hash=$(awk 'NR==1{print $1}' "$1" 2>/dev/null)
