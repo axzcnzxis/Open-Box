@@ -1,0 +1,124 @@
+name: Build and Release Open-Box
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release Tag Name (e.g. v0.1.339)'
+        required: true
+        default: 'v0.1.339'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine Tag Name
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+          else
+            TAG="${GITHUB_REF#refs/tags/}"
+          fi
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
+          echo "Building for Tag: $TAG"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Prepare Artifacts Directory
+        run: |
+          mkdir -p release-dist
+          # 拷贝安装、卸载、升级脚本及许可文件作为发布资产
+          cp scripts/install.sh release-dist/install.sh
+          cp scripts/update.sh release-dist/update.sh
+          cp scripts/uninstall.sh release-dist/uninstall.sh
+          cp LICENSE release-dist/LICENSE
+          cp COPYRIGHT.md release-dist/COPYRIGHT.md
+
+      - name: Download Pre-built Component Bundles
+        run: |
+          cd release-dist
+          BASE_TAG="v0.1.339"
+          BASE_URL="https://github.com/liandu2024/Open-Box/releases/download/${BASE_TAG}"
+
+          echo "Downloading upstream core components..."
+          for arch in x64 arm64; do
+            curl -fsSL "${BASE_URL}/open-box-linux-${arch}.tar.gz" -o "open-box-linux-${arch}.tar.gz"
+            curl -fsSL "${BASE_URL}/open-box-linux-${arch}-components.json" -o "open-box-linux-${arch}-components.json" || true
+            curl -fsSL "${BASE_URL}/open-box-${BASE_TAG}-linux-${arch}.tar.gz" -o "open-box-${{ steps.vars.outputs.TAG }}-linux-${arch}.tar.gz" || true
+            # 预备 sha256 供 build-docker.sh 验证
+            sha256sum "open-box-linux-${arch}.tar.gz" > "open-box-linux-${arch}.tar.gz.sha256"
+          done
+
+      - name: Build Docker Tarball Images
+        run: |
+          TAG="${{ steps.vars.outputs.TAG }}"
+          RELEASE_DIR="$(pwd)/release-dist"
+
+          for ARCH in x64 arm64; do
+            echo "Building Docker package for $ARCH..."
+            sh scripts/build-docker.sh "$ARCH" "$RELEASE_DIR" "open-box:${TAG#v}"
+            
+            # 导出 Docker 镜像包
+            docker save "open-box:${TAG#v}" | gzip > "$RELEASE_DIR/open-box-${TAG}-docker-linux-${ARCH}.tar.gz"
+          done
+
+      - name: Generate SHA256 Checksums
+        run: |
+          cd release-dist
+          for file in *; do
+            if [ -f "$file" ] && [ "${file##*.}" != "sha256" ]; then
+              sha256sum "$file" > "${file}.sha256"
+            fi
+          done
+          ls -lh
+
+      - name: Generate Release Notes
+        run: |
+          cat << 'EOF' > release-notes.md
+          ## Open-Box 发布版本
+
+          本版本由 GitHub Actions 自动化流水线构建发布。
+          包含 OpenWrt 软路由、Debian / Ubuntu 旁路由及 Docker 容器网关运行产物。
+
+          ### 路由器一键安装
+          ```sh
+          curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/install.sh | sh
+          ```
+
+          ### Docker 旁路由一键安装
+          ```sh
+          curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/docker/install.sh -o /tmp/openbox-docker-install.sh
+          sudo sh /tmp/openbox-docker-install.sh --ip <未被占用的局域网IP>
+          ```
+          EOF
+          cp release-notes.md release-dist/release-notes.md
+          sha256sum release-dist/release-notes.md > release-dist/release-notes.md.sha256
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.vars.outputs.TAG }}
+          name: "Open-Box ${{ steps.vars.outputs.TAG }}"
+          body_path: release-notes.md
+          draft: false
+          prerelease: false
+          files: release-dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
