@@ -420,17 +420,6 @@ check_existing_install() {
   info "检测到保留的 $INSTALL_ROOT/data(此前卸载时选择了保留数据),安装将复用它。"
 }
 
-# 仅警告,不阻断——与面板/内核启动时的硬性拒绝(P3)分工不同。
-check_conflicts() {
-  found=""
-  for svc in openclash nikki passwall passwall2 shadowsocksr homeproxy; do
-    [ -x "/etc/init.d/$svc" ] && found="$found $svc"
-  done
-  if [ -n "$found" ]; then
-    warn "检测到以下代理类插件已安装,可能与 Open-Box 冲突,建议先停用它们:$found"
-  fi
-}
-
 # ---- openbox-musl-check:start ----
 # 随包 Node 的运行库(libgcc_s / libstdc++,取自 Alpine)用了 DT_RELR 重定位,musl 1.2.4 起才支持:更老的 musl 加载时
 # 不做这类重定位,随包 Node 一跑就段错误(#429 #341:iStoreOS 22.03 / OpenWrt 22.03 是 musl 1.2.3);1.1.x(OpenWrt 21.02
@@ -470,7 +459,6 @@ map_arch
 check_storage
 check_memory
 check_existing_install
-check_conflicts
 info "预检通过(架构 $RAW_ARCH → $ARCH)。"
 
 # ---------- 面板端口 ----------
