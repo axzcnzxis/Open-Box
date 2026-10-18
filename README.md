@@ -22,17 +22,6 @@ Open-Box 分两部分：**路由器端**装在路由器 / 主机上，是一体�
 - **Windows 电脑**：Windows 10 / 11 64 位，见[Windows 客户端](#windows-客户端)
 - **Linux 电脑**：Ubuntu 22.04 / 24.04、Debian 12，64 位 x86，见[Linux 客户端](#linux-客户端)
 
-## 使用说明视频
-
-来自[安格视界 YouTube 频道](https://www.youtube.com/@Ange-Digital-Life/videos?hl=zh-CN)的操作演示，按发布先后。点链接会在当前页面打开，建议**右键「在新标签页中打开」**（或按住 Ctrl / ⌘ 再点）：
-
-1. [最新软路由代理 Open-Box 发布！全图形极简配置，超越 OpenClash/Nikki/Passwall + SubStore + Zashboard？](https://youtu.be/G_7AmjfSRQ8)
-2. [集成 ADGuard Home + 故障转移 + 解决 Google Play 无法下载，Open-Box 更新了啥？](https://youtu.be/fczlXs2t5tI)
-3. [魔改 Sing-Box 1.14 内核，直连提速 200%！等同 Dae 性能，绝无 DNS 泄露 + 链式代理，Open-Box 完整体来了！](https://youtu.be/5_Z9d2zyzAw)
-4. [Open-Box 客户端 Android 来啦！真一键配置 + 完美分流，绝无DNS泄露，是时候卸载 Karing/ClashMi 等其他代理 App 了](https://youtu.be/NVUssX8ILxE)
-5. [Windows/macOS 来了，Open-Box 客户端，真一键配置 + 完美分流，绝无DNS泄露，生产力平台哪能缺席？](https://youtu.be/A1yFmwQLES4)
-6. [Open-Box 客户端 Liunx 版上线，支持 Ubuntu/Debian，真一键配置，Android 端解决Google Play 下载问题/Geimini无网络问题，iOS 更新预告！](https://youtu.be/DfNwBbd3ECQ)
-
 
 
 ## 路由器端
@@ -126,6 +115,20 @@ Open-Box 分两部分：**路由器端**装在路由器 / 主机上，是一体�
 
 ### 安装
 
+#### 方式一：本地执行（推荐开发/二次开发使用）
+
+克隆或下载本仓库到本地后，直接执行本地脚本安装：
+
+```sh
+# 进入仓库目录执行
+sh scripts/install.sh
+
+# 如果 GitHub 访问不畅，可追加 --mirror 参数使用镜像下载
+sh scripts/install.sh --mirror
+```
+
+#### 方式二：远程在线一键安装
+
 SSH 以 root 登录 OpenWrt 路由器后执行：
 
 ```sh
@@ -201,6 +204,12 @@ Open-Box v0.1.216
 
 面板中可以从“设置 → 后端设置”检查更新，也可以通过 SSH 执行（OpenWrt 与 Debian / Ubuntu 同一条命令）：
 
+**本地脚本升级：**
+```sh
+sh scripts/update.sh
+```
+
+**远程一键升级：**
 ```sh
 curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/update.sh | sh
 ```
@@ -211,13 +220,21 @@ curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/upd
 
 如果升级后面板或内核异常,可以用下面的命令回退:脚本会到 GitHub 查当前版本之前最近的正式 Release,重新下载那一版的完整安装包装回去。路由器本机不保留旧版备份,所以回退需要能访问 GitHub(或镜像);订阅、规则、面板密码等数据目录不会被动。
 
+**本地脚本回退：**
 ```sh
-curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/update.sh | sh -s -- --rollback --direct
+# 直连
+sh scripts/update.sh --rollback --direct
+
+# 镜像加速
+sh scripts/update.sh --rollback --mirror https://gh-proxy.com
 ```
 
-GitHub 访问不畅时，使用代理执行：
-
+**远程一键回退：**
 ```sh
+# 直连
+curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/update.sh | sh -s -- --rollback --direct
+
+# 镜像加速
 curl -fsSL https://gh-proxy.com/raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/update.sh | sh -s -- --rollback --mirror https://gh-proxy.com
 ```
 
@@ -225,15 +242,21 @@ curl -fsSL https://gh-proxy.com/raw.githubusercontent.com/axzcnzxis/Open-Box/mai
 
 ### 卸载
 
-默认停止服务并保留订阅和配置数据：
-
+**本地脚本卸载：**
 ```sh
-curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/uninstall.sh | sh
+# 默认停止服务并保留订阅和配置数据
+sh scripts/uninstall.sh
+
+# 连数据一起删除
+sh scripts/uninstall.sh --purge
 ```
 
-连数据一起删除：
-
+**远程一键卸载：**
 ```sh
+# 默认停止服务并保留订阅和配置数据
+curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/uninstall.sh | sh
+
+# 连数据一起删除
 curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/uninstall.sh | sh -s -- --purge
 ```
 
