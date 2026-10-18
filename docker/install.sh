@@ -116,7 +116,7 @@ if [ -z "$IMAGE" ] && [ -z "$ARCHIVE" ]; then
  command -v curl >/dev/null 2>&1 || die '在线下载需要 curl。'
  TEMP=$(mktemp -d)
  if [ "$VERSION" = latest ]; then
-  fetch 'https://api.github.com/repos/liandu2024/Open-Box/releases/latest' "$TEMP/release.json"
+  fetch 'https://api.github.com/repos/axzcnzxis/Open-Box/releases/latest' "$TEMP/release.json"
   VERSION=$(sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$TEMP/release.json" | head -n 1)
  fi
  printf '%s\n' "$VERSION" | awk '/^v[0-9]+\.[0-9]+\.[0-9]+([.-][a-zA-Z0-9.-]+)?$/ {ok=1} END{exit !ok}' || die 'Release 版本号无效。'
@@ -124,8 +124,8 @@ if [ -z "$IMAGE" ] && [ -z "$ARCHIVE" ]; then
  if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
   file="open-box-$VERSION-docker-linux-$ARCH.tar.gz"
   printf '下载并校验 %s 镜像…\n' "$ARCH"
-  fetch "https://github.com/liandu2024/Open-Box/releases/download/$VERSION/$file" "$TEMP/$file"
-  fetch "https://github.com/liandu2024/Open-Box/releases/download/$VERSION/$file.sha256" "$TEMP/$file.sha256"
+  fetch "https://github.com/axzcnzxis/Open-Box/releases/download/$VERSION/$file" "$TEMP/$file"
+  fetch "https://github.com/axzcnzxis/Open-Box/releases/download/$VERSION/$file.sha256" "$TEMP/$file.sha256"
   ARCHIVE="$TEMP/$file"
  fi
 fi

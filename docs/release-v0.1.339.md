@@ -6,7 +6,7 @@
 
 ### 客户端下载
 
-- [Android · 0.1.330](https://github.com/liandu2024/Open-Box/releases/download/v0.1.330/open-box-android-0.1.330.apk)
-- [Linux amd64 · 0.1.330](https://github.com/liandu2024/Open-Box/releases/download/v0.1.330/open-box-desktop-linux-0.1.330-amd64.deb)
-- [macOS arm64 · 0.1.330](https://github.com/liandu2024/Open-Box/releases/download/v0.1.330/open-box-macos-0.1.330-arm64.dmg)
-- [Windows x64 · 0.1.330](https://github.com/liandu2024/Open-Box/releases/download/v0.1.330/open-box-windows-0.1.330-x64-setup.exe)
+- [Android · 0.1.330](https://github.com/axzcnzxis/Open-Box/releases/download/v0.1.330/open-box-android-0.1.330.apk)
+- [Linux amd64 · 0.1.330](https://github.com/axzcnzxis/Open-Box/releases/download/v0.1.330/open-box-desktop-linux-0.1.330-amd64.deb)
+- [macOS arm64 · 0.1.330](https://github.com/axzcnzxis/Open-Box/releases/download/v0.1.330/open-box-macos-0.1.330-arm64.dmg)
+- [Windows x64 · 0.1.330](https://github.com/axzcnzxis/Open-Box/releases/download/v0.1.330/open-box-windows-0.1.330-x64-setup.exe)

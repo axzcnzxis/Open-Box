@@ -54,7 +54,7 @@ set -eu
 # uhttpd / rpcd 读到,LuCI 的 status.js 曾因此变成 600 而 403(GitHub #103 #106 #110)
 umask 022
 
-REPO="liandu2024/Open-Box"
+REPO="axzcnzxis/Open-Box"
 INSTALL_ROOT="/opt/open-box"
 # 获取最新升级脚本早于主流程，也需要内置镜像列表，必须先初始化。
 BUILTIN_MIRRORS="
@@ -1059,7 +1059,7 @@ check_installed() {
   if [ ! -d "$INSTALL_ROOT" ] || [ ! -f "$INSTALL_ROOT/meta.json" ]; then
     # 同上:给能直接照抄的命令,别只说"请使用 install.sh"
     die "未检测到现有 Open-Box 安装($INSTALL_ROOT)。首次安装请复制下面这条命令运行:
-       curl -fsSL https://raw.githubusercontent.com/liandu2024/Open-Box/main/scripts/install.sh | sh -s -- --mirror"
+       curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/install.sh | sh -s -- --mirror"
   fi
 }
 

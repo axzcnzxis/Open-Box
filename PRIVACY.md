@@ -28,7 +28,7 @@ These services see the IP address of the request, as with any network request. T
 
 ## Contact
 
-Questions: https://github.com/liandu2024/Open-Box/issues
+Questions: https://github.com/axzcnzxis/Open-Box/issues
 
 ---
 
@@ -62,7 +62,7 @@ Open-Box 是 Open-Box 路由器软件的客户端,在你的设备上运行 VPN,�
 
 ## 联系方式
 
-问题反馈:https://github.com/liandu2024/Open-Box/issues
+问题反馈:https://github.com/axzcnzxis/Open-Box/issues
 
 ---
 
@@ -96,4 +96,4 @@ Open-Box 是 Open-Box 路由器軟體的用戶端,在你的裝置上執行 VPN,�
 
 ## 聯絡方式
 
-問題回報:https://github.com/liandu2024/Open-Box/issues
+問題回報:https://github.com/axzcnzxis/Open-Box/issues

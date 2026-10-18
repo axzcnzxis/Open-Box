@@ -15,4 +15,4 @@ Open-Box 自有程序按闭源专有软件分发，适用 [LICENSE](LICENSE)。�
 
 ## 官方来源
 
-官方仓库及发行版：[liandu2024/Open-Box](https://github.com/liandu2024/Open-Box)。转载文档或使用公开脚本不构成获得自有程序源码、品牌或衍生发行授权。
+官方仓库及发行版：[axzcnzxis/Open-Box](https://github.com/axzcnzxis/Open-Box)。转载文档或使用公开脚本不构成获得自有程序源码、品牌或衍生发行授权。

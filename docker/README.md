@@ -20,7 +20,7 @@ sudo sh docker/install.sh
 在 Docker 宿主直接下载运行：
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/liandu2024/Open-Box/main/docker/install.sh -o /tmp/openbox-docker-install.sh
+curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/docker/install.sh -o /tmp/openbox-docker-install.sh
 sudo sh /tmp/openbox-docker-install.sh --ip 192.168.1.2
 ```
 
@@ -41,7 +41,7 @@ sudo sh docker/install.sh --offline --archive ./open-box-v0.1.339-docker-linux-x
 
 ## 手动下载镜像
 
-从 [v0.1.339 Release](https://github.com/liandu2024/Open-Box/releases/tag/v0.1.339) 下载宿主对应架构的镜像和 SHA256 文件：
+从 [v0.1.339 Release](https://github.com/axzcnzxis/Open-Box/releases/tag/v0.1.339) 下载宿主对应架构的镜像和 SHA256 文件：
 
 - x86_64 / amd64：`open-box-v0.1.339-docker-linux-x64.tar.gz`
 - aarch64 / arm64：`open-box-v0.1.339-docker-linux-arm64.tar.gz`

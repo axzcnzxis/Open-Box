@@ -33,11 +33,7 @@ Open-Box 分两部分：**路由器端**装在路由器 / 主机上，是一体�
 5. [Windows/macOS 来了，Open-Box 客户端，真一键配置 + 完美分流，绝无DNS泄露，生产力平台哪能缺席？](https://youtu.be/A1yFmwQLES4)
 6. [Open-Box 客户端 Liunx 版上线，支持 Ubuntu/Debian，真一键配置，Android 端解决Google Play 下载问题/Geimini无网络问题，iOS 更新预告！](https://youtu.be/DfNwBbd3ECQ)
 
-## 推荐服务
 
-- 优惠购买 AI 接口、机场、VPS、住宅 IP：[**安格超市**](https://blog.angeworld.cc/market)
-- AI 中转站：[**SUPERDOOR 订阅服务**](https://ai.superdoor.top/)
-- 按需付费 AI 服务：[**OPENDOOR**](https://ai.opendoor.sbs/)
 
 ## 路由器端
 
@@ -115,7 +111,7 @@ Open-Box 分两部分：**路由器端**装在路由器 / 主机上，是一体�
 
 ### 下载
 
-请从 [GitHub Releases](https://github.com/liandu2024/Open-Box/releases/latest) 下载对应架构的完整安装包：
+请从 [GitHub Releases](https://github.com/axzcnzxis/Open-Box/releases/latest) 下载对应架构的完整安装包：
 
 - `x64`：x86_64 路由器 / 主机
 - `arm64`：aarch64 路由器 / 主机
@@ -133,13 +129,13 @@ Open-Box 分两部分：**路由器端**装在路由器 / 主机上，是一体�
 SSH 以 root 登录 OpenWrt 路由器后执行：
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/liandu2024/Open-Box/main/scripts/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/install.sh | sh
 ```
 
 GitHub 访问不畅时，需要先通过可访问的 raw 镜像获取安装脚本，再让脚本使用镜像下载发布包：
 
 ```sh
-curl -fsSL https://gh-proxy.com/raw.githubusercontent.com/liandu2024/Open-Box/main/scripts/install.sh | sh -s -- --mirror
+curl -fsSL https://gh-proxy.com/raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/install.sh | sh -s -- --mirror
 ```
 
 `--mirror` 只控制安装包下载；如果最外层的 `raw.githubusercontent.com` 本身无法访问，直接在原地址后追加 `--mirror` 仍然无法取得脚本。
@@ -206,7 +202,7 @@ Open-Box v0.1.216
 面板中可以从“设置 → 后端设置”检查更新，也可以通过 SSH 执行（OpenWrt 与 Debian / Ubuntu 同一条命令）：
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/liandu2024/Open-Box/main/scripts/update.sh | sh
+curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/update.sh | sh
 ```
 
 升级会保留订阅、规则和面板密码，并校验 Open-Box、sing-box、GeoSite / GeoIP 组件。相同且完整的组件直接复用，只有变化、缺失或损坏的组件才会从本仓库 Release 下载。
@@ -216,13 +212,13 @@ curl -fsSL https://raw.githubusercontent.com/liandu2024/Open-Box/main/scripts/up
 如果升级后面板或内核异常,可以用下面的命令回退:脚本会到 GitHub 查当前版本之前最近的正式 Release,重新下载那一版的完整安装包装回去。路由器本机不保留旧版备份,所以回退需要能访问 GitHub(或镜像);订阅、规则、面板密码等数据目录不会被动。
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/liandu2024/Open-Box/main/scripts/update.sh | sh -s -- --rollback --direct
+curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/update.sh | sh -s -- --rollback --direct
 ```
 
 GitHub 访问不畅时，使用代理执行：
 
 ```sh
-curl -fsSL https://gh-proxy.com/raw.githubusercontent.com/liandu2024/Open-Box/main/scripts/update.sh | sh -s -- --rollback --mirror https://gh-proxy.com
+curl -fsSL https://gh-proxy.com/raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/update.sh | sh -s -- --rollback --mirror https://gh-proxy.com
 ```
 
 两条命令都会自动识别路由器架构,下载上一个版本的完整安装包,先校验 SHA256,再替换当前文件;校验或替换失败会保留现有安装。--mirror 只影响安装包下载,查询 Release 列表的 GitHub API 会先直连、直连不通再经镜像。
@@ -232,13 +228,13 @@ curl -fsSL https://gh-proxy.com/raw.githubusercontent.com/liandu2024/Open-Box/ma
 默认停止服务并保留订阅和配置数据：
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/liandu2024/Open-Box/main/scripts/uninstall.sh | sh
+curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/uninstall.sh | sh
 ```
 
 连数据一起删除：
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/liandu2024/Open-Box/main/scripts/uninstall.sh | sh -s -- --purge
+curl -fsSL https://raw.githubusercontent.com/axzcnzxis/Open-Box/main/scripts/uninstall.sh | sh -s -- --purge
 ```
 
 ## 客户端
@@ -250,12 +246,12 @@ Open-Box App 把家里路由器端的分流规则带到手机、电脑上：在�
 - **和路由器一样的分流**：选了直连的流量不进内核；「连接」页能看每条连接走哪条线路、看内核日志，「路由」页签输入网址就能看它按哪条规则走（规则路由）、实际访问时怎么走（真实路由）。
 - **其他**：连上指定的 Wi-Fi（比如到家后）自动暂停 VPN、IPv6 开关、简体 / 繁體 / English、亮色 / 深色主题。
 
-安装包都在 [Releases](https://github.com/liandu2024/Open-Box/releases)：`open-box-android-<版本>.apk`、`open-box-macos-<版本>-arm64.dmg`、`open-box-windows-<版本>-x64-setup.exe`、`open-box-desktop-linux-<版本>-amd64.deb`，也可以在面板「设置 → 客户端」最上面的「客户端下载」里直接点。客户端只在有更新时随版本发布；最新版没带的话，它的版本说明末尾「客户端下载」一节有最新安装包的链接，也可以在 Releases 列表里往前找。
+安装包都在 [Releases](https://github.com/axzcnzxis/Open-Box/releases)：`open-box-android-<版本>.apk`、`open-box-macos-<版本>-arm64.dmg`、`open-box-windows-<版本>-x64-setup.exe`、`open-box-desktop-linux-<版本>-amd64.deb`，也可以在面板「设置 → 客户端」最上面的「客户端下载」里直接点。客户端只在有更新时随版本发布；最新版没带的话，它的版本说明末尾「客户端下载」一节有最新安装包的链接，也可以在 Releases 列表里往前找。
 
 ### Android 客户端
 
 - **系统要求**：Android 12 及以上、64 位 ARM。
-- **安装与升级**：从 [Releases](https://github.com/liandu2024/Open-Box/releases) 下载最新的 `open-box-android-<版本>.apk`（或在面板「设置 → 客户端」的「客户端下载」里点 Android 图标），第一次手动安装（系统会提示允许安装来自浏览器 / 文件管理器的应用）；以后在 App「设置 → 检查更新」里一键升级。
+- **安装与升级**：从 [Releases](https://github.com/axzcnzxis/Open-Box/releases) 下载最新的 `open-box-android-<版本>.apk`（或在面板「设置 → 客户端」的「客户端下载」里点 Android 图标），第一次手动安装（系统会提示允许安装来自浏览器 / 文件管理器的应用）；以后在 App「设置 → 检查更新」里一键升级。
 
 首页（节点分流）、代理 · 策略（本地分流）、连接 · 路由、设置：
 
@@ -273,7 +269,7 @@ Open-Box App 把家里路由器端的分流规则带到手机、电脑上：在�
 App 常驻菜单栏，退出 App 就断开 VPN；设置里有开机自启开关（默认关）。
 
 - **系统要求**：Apple 芯片（M1 及以后）的 Mac，macOS 14 及以上。
-- **安装**：从 [Releases](https://github.com/liandu2024/Open-Box/releases) 下载最新的 `open-box-macos-<版本>-arm64.dmg`（或在面板「设置 → 客户端」的「客户端下载」里点 macOS 图标），打开后把 Open-Box 拖进「应用程序」。App 没有 Apple 开发者签名，第一次打开会提示无法验证：到「系统设置 → 隐私与安全性」最下面点「仍要打开」（macOS 15 起右键「打开」已经绕不过去）。第一次打开还会请你输一次电脑密码，装一个后台服务（建立 VPN、修改系统 DNS 用，断开后自动还原）。
+- **安装**：从 [Releases](https://github.com/axzcnzxis/Open-Box/releases) 下载最新的 `open-box-macos-<版本>-arm64.dmg`（或在面板「设置 → 客户端」的「客户端下载」里点 macOS 图标），打开后把 Open-Box 拖进「应用程序」。App 没有 Apple 开发者签名，第一次打开会提示无法验证：到「系统设置 → 隐私与安全性」最下面点「仍要打开」（macOS 15 起右键「打开」已经绕不过去）。第一次打开还会请你输一次电脑密码，装一个后台服务（建立 VPN、修改系统 DNS 用，断开后自动还原）。
 - **升级**：在 App「设置 → 检查更新」里一键升级，不用再点「仍要打开」；后台服务有变化时会再请你输一次电脑密码。
 - **卸载**：App「设置 → 卸载 Open-Box」。
 - 「连接指定 Wi-Fi 暂停」要允许 App 使用位置信息（macOS 只把 Wi-Fi 名称给有定位权限的 App）。
@@ -294,7 +290,7 @@ App 常驻菜单栏，退出 App 就断开 VPN；设置里有开机自启开关�
 App 常驻任务栏右下角：关掉窗口还在后台，左键点图标打开窗口，右键菜单里可以连接 / 断开、退出；退出 App 就断开 VPN。设置里有开机自启开关（默认关）。
 
 - **系统要求**：Windows 10 / 11，64 位。
-- **安装**：从 [Releases](https://github.com/liandu2024/Open-Box/releases) 下载最新的 `open-box-windows-<版本>-x64-setup.exe`（或在面板「设置 → 客户端」的「客户端下载」里点 Windows 图标），双击安装。安装包没有代码签名，运行时会提示「Windows 已保护你的电脑」：点「更多信息 → 仍要运行」，再在用户账户控制里点「是」。安装时会装一个后台服务（建立 VPN 用）。
+- **安装**：从 [Releases](https://github.com/axzcnzxis/Open-Box/releases) 下载最新的 `open-box-windows-<版本>-x64-setup.exe`（或在面板「设置 → 客户端」的「客户端下载」里点 Windows 图标），双击安装。安装包没有代码签名，运行时会提示「Windows 已保护你的电脑」：点「更多信息 → 仍要运行」，再在用户账户控制里点「是」。安装时会装一个后台服务（建立 VPN 用）。
 - **升级**：在 App「设置 → 检查更新」里一键升级：用户账户控制里点一次「是」，装好后 App 自动重新打开。
 - **卸载**：App「设置 → 卸载 Open-Box」，或在 Windows「设置 → 应用 → 已安装的应用」里卸载 Open-Box。
 - 「连接指定 Wi-Fi 暂停」在 Windows 11 24H2 及以后要在「设置 → 隐私和安全性 → 位置」里打开定位服务、允许桌面应用访问位置（Windows 只把 Wi-Fi 名称给有定位权限的应用）。
@@ -315,7 +311,7 @@ App 常驻任务栏右下角：关掉窗口还在后台，左键点图标打开�
 关掉窗口 App 还在后台，顶栏托盘图标的菜单里可以打开窗口、连接 / 断开、退出；退出 App 就断开 VPN。设置里有开机自启开关（默认关）。
 
 - **系统要求**：Ubuntu 22.04 / 24.04、Debian 12，64 位 x86（amd64），GNOME 或 KDE 桌面。GNOME 要有 AppIndicator 扩展才显示托盘图标（Ubuntu 自带；Debian 要装 `gnome-shell-extension-appindicator`），没有托盘时从应用列表再打开 Open-Box 就回到窗口。
-- **安装**：从 [Releases](https://github.com/liandu2024/Open-Box/releases) 下载最新的 `open-box-desktop-linux-<版本>-amd64.deb`（或在面板「设置 → 客户端」的「客户端下载」里点 Linux 图标），在下载目录里运行 `sudo apt install ./open-box-desktop-linux-<版本>-amd64.deb`，装好后在应用列表里打开 Open-Box。安装时会装一个后台服务（建立 VPN、接管系统 DNS 用，断开后自动还原）。
+- **安装**：从 [Releases](https://github.com/axzcnzxis/Open-Box/releases) 下载最新的 `open-box-desktop-linux-<版本>-amd64.deb`（或在面板「设置 → 客户端」的「客户端下载」里点 Linux 图标），在下载目录里运行 `sudo apt install ./open-box-desktop-linux-<版本>-amd64.deb`，装好后在应用列表里打开 Open-Box。安装时会装一个后台服务（建立 VPN、接管系统 DNS 用，断开后自动还原）。
 - **升级**：在 App「设置 → 检查更新」里一键升级，不用输密码，装好后 App 自动重新打开。
 - **卸载**：App「设置 → 卸载 Open-Box」，或运行 `sudo apt purge open-box-desktop`。
 - 同一台电脑上装着路由器端 Open-Box（Debian / Ubuntu 版）、而且它的内核在跑时，App 不会连接，要先在它的面板里停止内核。
@@ -337,10 +333,10 @@ App 常驻任务栏右下角：关掉窗口还在后台，左键点图标打开�
 
 ## Star 增长
 
-<a href="https://www.star-history.com/#liandu2024/open-box&Date">
+<a href="https://www.star-history.com/#axzcnzxis/Open-Box&Date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=liandu2024/open-box&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=liandu2024/open-box&type=Date" />
-    <img alt="Open-Box Star 增长图" src="https://api.star-history.com/svg?repos=liandu2024/open-box&type=Date" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=axzcnzxis/Open-Box&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=axzcnzxis/Open-Box&type=Date" />
+    <img alt="Open-Box Star 增长图" src="https://api.star-history.com/svg?repos=axzcnzxis/Open-Box&type=Date" />
   </picture>
 </a>

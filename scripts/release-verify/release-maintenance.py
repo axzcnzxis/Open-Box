@@ -119,7 +119,7 @@ def preserve_client(repo, item, target):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--repo', default='liandu2024/Open-Box')
+    parser.add_argument('--repo', default='axzcnzxis/Open-Box')
     parser.add_argument('--apply', action='store_true')
     parser.add_argument('--notes-file', type=Path, help='Replace latest stable notes, retaining latest client links')
     args = parser.parse_args()
