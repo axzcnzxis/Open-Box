@@ -66,6 +66,18 @@ jobs:
             sha256sum "open-box-linux-${arch}.tar.gz" > "open-box-linux-${arch}.tar.gz.sha256"
           done
 
+      - name: Patch Bundles (Remove Conflicts & Ads)
+        run: |
+          cd release-dist
+          python3 ../scripts/patch-upstream-bundle.py open-box-linux-x64.tar.gz open-box-linux-arm64.tar.gz
+          for f in open-box-*-linux-*.tar.gz; do
+            if [ -f "$f" ] && [ "$f" != "open-box-linux-x64.tar.gz" ] && [ "$f" != "open-box-linux-arm64.tar.gz" ]; then
+              python3 ../scripts/patch-upstream-bundle.py "$f"
+            fi
+          done
+          sha256sum "open-box-linux-x64.tar.gz" > "open-box-linux-x64.tar.gz.sha256"
+          sha256sum "open-box-linux-arm64.tar.gz" > "open-box-linux-arm64.tar.gz.sha256"
+
       - name: Build Docker Tarball Images
         run: |
           TAG="${{ steps.vars.outputs.TAG }}"
