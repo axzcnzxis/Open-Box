@@ -243,7 +243,7 @@ OPENBOX_PORT_FILE=/opt/open-box/data/panel-port
 OPENBOX_PORT_FALLBACK=2026
 OPENBOX_PORT_DEFAULT=3036
 # Open-Box 自己占的端口(内核 clash API / DNS 入站 / DNS 重写 / 回环入站)和动不得的系统端口
-OPENBOX_RESERVED_PORTS="9095 7853 7854 7891 53 22 80 443"
+OPENBOX_RESERVED_PORTS="9095 7853 7854 7894 53 22 80 443"
 
 # 端口能不能用:不能用时把原因打到 stdout 并返回 0;能用返回 1
 openbox_port_problem() {

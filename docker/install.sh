@@ -59,7 +59,7 @@ for value in "$NAME" "$NETWORK"; do
  case "$value" in ''|[!a-zA-Z0-9]*|*[!a-zA-Z0-9_.-]*) die '容器和网络名称只能包含字母、数字、点、下划线和横线。';; esac
 done
 case "$DRIVER" in macvlan|ipvlan) ;; *) die '--driver 只能是 macvlan 或 ipvlan。';; esac
-case "$PANEL_PORT" in ''|0*|*[!0-9]*|53|7853|7854|7891|9095) die '面板端口无效或与内核冲突。';; esac
+case "$PANEL_PORT" in ''|0*|*[!0-9]*|53|7853|7854|7894|9095) die '面板端口无效或与内核冲突。';; esac
 [ "${#PANEL_PORT}" -le 5 ] && [ "$PANEL_PORT" -le 65535 ] || die '面板端口必须是 1–65535。'
 route=$(ip -4 route show default | head -n 1)
 INTERFACE=${INTERFACE:-$(printf '%s\n' "$route" | awk '{for(i=1;i<NF;i++)if($i=="dev"){print $(i+1);exit}}')}
