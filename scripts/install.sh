@@ -682,7 +682,13 @@ fetch_to_stdout() {
 # 轮不到换 npmmirror(ubuntu23 实测卡在 18 MB 不动)
 fetch_to_file() {
   case "$DOWNLOADER" in
-    curl) curl -fsSL --connect-timeout 15 --speed-limit 1024 --speed-time 60 -o "$2" "$1" ;;
+    curl)
+        if [ -t 1 ]; then
+            curl -fSL --progress-bar --connect-timeout 15 --speed-limit 1024 --speed-time 60 -o "$2" "$1"
+        else
+            curl -fsSL --connect-timeout 15 --speed-limit 1024 --speed-time 60 -o "$2" "$1"
+        fi
+        ;;
     wget) wget -q --timeout=60 -O "$2" "$1" ;;
   esac
 }
